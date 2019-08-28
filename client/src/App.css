@@ -1,0 +1,50 @@
+.navbar-color {
+  background-color: #41464b;
+}
+
+body {
+  background-color: #252525;
+}
+
+.navbar {
+  -webkit-box-shadow: 0 8px 6px -6px #999;
+  -moz-box-shadow: 0 8px 6px -6px #999;
+  box-shadow: inset 0px 1px 1px 0px #999;
+}
+
+.navbar-brand {
+  color: lightgray;
+}
+
+label {
+  color: white;
+}
+
+input {
+  border-radius: 0 !important;
+}
+
+.top-buffer {
+  margin-top:20px;
+}
+
+.form-group.required .control-label:after { 
+  content:"*";
+  color:red;
+  margin-left: 6px;
+}
+
+.icon-inside {
+  position: absolute;
+  right: 10px;
+  top: calc(50% - 12px);
+  pointer-events: none;
+  font-size: 16px;
+  font-size: 1.125rem;
+  color: #c4c3c3;
+  z-index:3;
+}
+
+.validated {
+  display: block;
+}
