@@ -28,6 +28,8 @@ class App extends React.Component {
   }
 
   submit = () => {
+    // simple form so no need to over engineer with redux
+
     this.setState({ prestine: false });
 
     const that = this;
