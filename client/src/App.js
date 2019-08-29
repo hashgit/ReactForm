@@ -6,6 +6,8 @@ class App extends React.Component {
 
   state = {
     prestine: true,
+    created: false,
+    error: null,
     values: {
       firstName: '',
       lastName: '',
@@ -21,8 +23,28 @@ class App extends React.Component {
     this.setState({ values });
   }
 
+  formIsValid(values) {
+    return !!values.firstName && !!values.lastName && !!values.email;
+  }
+
   submit = () => {
     this.setState({ prestine: false });
+
+    const that = this;
+
+    if (this.formIsValid(this.state.values)) {
+      fetch('http://localhost:5000/api/form', {
+        method: 'post',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          data: this.state.values
+        })
+      }).then(() => {
+        that.setState({ created: true });
+      }).catch(err => {
+        that.setState({ error: err.Message });
+      });
+    }
   }
 
   isValid = (field) => () => {
@@ -30,7 +52,7 @@ class App extends React.Component {
   }
 
   render() {
-    const {prestine} = this.state;
+    const {prestine, error, created} = this.state;
 
     return (
       <React.Fragment>
@@ -46,9 +68,9 @@ class App extends React.Component {
                 <FormInput
                   label="First Name"
                   name="firstName"
-                  required icon
+                  required
                   onChange={this.onChange('firstName')}
-                  validated={!prestine && this.isValid('firstName')}
+                  validated={!prestine && !this.isValid('firstName')()}
                  />
               </div>
               <div className="col-sm-12 col-md-6">
@@ -57,7 +79,7 @@ class App extends React.Component {
                   name="lastName"
                   required
                   onChange={this.onChange('lastName')}
-                  validated={!prestine && this.isValid('lastName')}
+                  validated={!prestine && !this.isValid('lastName')()}
                 />
               </div>
             </div>
@@ -68,7 +90,7 @@ class App extends React.Component {
                   name="email"
                   required
                   onChange={this.onChange('email')}
-                  validated={!prestine && this.isValid('email')}
+                  validated={!prestine && !this.isValid('email')()}
                 />
               </div>
               <div className="col-sm-12 col-md-6">
@@ -82,6 +104,20 @@ class App extends React.Component {
             <div className="row top-buffer">
               <div className="col-sm-12">
                 <button type="button" className="btn" onClick={this.submit}>Submit</button>
+              </div>
+            </div>
+            <div className="row top-buffer">
+              <div className="col-sm-12">
+                { created &&
+                  <div class="alert alert-success" role="alert">
+                    { created && "User has been created" }
+                  </div>
+                }
+                {error &&
+                  <div class="alert alert-danger" role="alert">
+                    { error }
+                  </div>
+                }
               </div>
             </div>
           </form>
